@@ -20,3 +20,9 @@ content-type: application/json
     "password":"123"
 }
 
+
+###
+
+GET http://localhost:5000/users/1
+
+

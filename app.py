@@ -64,5 +64,17 @@ def register():
     }),400
 
 
+@app.route("/users/<int:user_id>",methods=["GET"])
+@login_required
+def get_profile(user_id):
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"message":"Usuário não encontrado"}),404
+    
+    return jsonify({"user":{
+        "username":user.username
+    }})
+
 if __name__ == "__main__":
     app.run(debug=True)
