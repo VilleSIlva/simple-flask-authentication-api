@@ -76,5 +76,26 @@ def get_profile(user_id):
         "username":user.username
     }})
 
+@app.route("/users/<int:user_id>",methods=["PUT"])
+@login_required
+def update_user(user_id):
+    data = request.json
+  
+    if not data.get("password"):
+     return  jsonify({"message":"Senha é obrigatória"}),400
+
+    user = User.query.get(user_id)
+    
+    if not user:
+     return jsonify({"message":"Usuário não encontrado"}),404
+
+    user.password = data.get("password")
+
+    db.session.commit()
+
+    return jsonify({"message":f"A senha do usuário {user.username} foi editado com sucesso"})
+    
+
 if __name__ == "__main__":
     app.run(debug=True)
+

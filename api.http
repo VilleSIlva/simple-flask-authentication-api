@@ -2,8 +2,8 @@ POST http://localhost:5000/login
 content-type: application/json
 
 {
-    "username":"VIlle",
-    "password":"123"
+    "username":"Ville Nunes",
+    "password":"12345678"
 }
 ###
 
@@ -16,13 +16,21 @@ POST http://localhost:5000/register
 content-type: application/json
 
 {
-    "username":"VIlleNunese",
-    "password":"123"
+    "username":"Ville Nunes",
+    "password":"12345678"
 }
-
 
 ###
 
 GET http://localhost:5000/users/1
+
+###
+
+PUT http://localhost:5000/users/1
+content-type: application/json
+
+{
+    "password":"Senha Editadas"
+}
 
 
