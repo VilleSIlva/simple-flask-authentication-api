@@ -5,3 +5,18 @@ content-type: application/json
     "username":"VIlle",
     "password":"123"
 }
+###
+
+GET http://localhost:5000/logout
+content-type: application/json
+
+###
+
+POST http://localhost:5000/register
+content-type: application/json
+
+{
+    "username":"VIlleNunese",
+    "password":"123"
+}
+
