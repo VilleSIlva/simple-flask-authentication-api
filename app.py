@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from database import db
 from models.User import User
-from flask_login import  LoginManager, login_required, login_user, logout_user
+from flask_login import  LoginManager, login_required, login_user, logout_user, current_user
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -94,6 +94,24 @@ def update_user(user_id):
     db.session.commit()
 
     return jsonify({"message":f"A senha do usuário {user.username} foi editado com sucesso"})
+
+@app.route("/users/<int:user_id>",methods=["DELETE"])
+@login_required
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    
+    if current_user.id == user.id:
+        return jsonify({"message":"Não permitido"}),401
+
+    if not user:
+     return jsonify({"message":"Usuário não encontrado"}),404
+
+    db.session.delete(user)
+
+    db.session.commit()
+
+    return jsonify({"message":f"O usuário foi excluido com sucesso"})
+    
     
 
 if __name__ == "__main__":
