@@ -1,6 +1,8 @@
+import bcrypt
 from flask import Flask, jsonify, request
 from database import db
 from models.User import User
+from bcrypt import hashpw, checkpw
 from flask_login import  LoginManager, login_required, login_user, logout_user, current_user
 
 app = Flask(__name__)
@@ -26,7 +28,7 @@ def login():
     if username and password:
        user = User.query.filter_by(username=username).first()
 
-       if user and user.password == password:
+       if user and checkpw(password.encode(),user.password):
             login_user(user)
             return jsonify({"message":"Login Realizado com sucesso"}),400
 
@@ -53,7 +55,8 @@ def register():
         if user:
             return jsonify({"message":"Já existe um usuário com esse username"}),400
 
-        newUser = User(username=username,password=password)
+        password_hash = hashpw(password.encode(),bcrypt.gensalt())
+        newUser = User(username=username,password=password_hash)
         db.session.add(newUser)
         db.session.commit()
 
@@ -115,5 +118,7 @@ def delete_user(user_id):
     
 
 if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
 
